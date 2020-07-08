@@ -161,7 +161,7 @@ class imgVerify:
     #返回坐标点
     def getCoordByChaoying(self,driver):
         self.getImg(driver)
-        chaojiying = Chaojiying_Client('260631308', 'mengwei080305','4ba372176f5fbed6c385208ae49cd901')  # 用户中心>>软件ID 生成一个替换 96001
+        chaojiying = Chaojiying_Client('用户名', '密码','id')  # 用户中心>>软件ID 生成一个替换 96001
         im = open(self.img, 'rb').read()  # 本地图片文件路径 来替换 a.jpg 有时WIN系统须要//
         if self.img == "D:/spider/captche/orderClick.png":
             dict = chaojiying.PostPic(im, 9004)  # 1902 验证码类型  官方网站>>价格体系 3.4+版 print 后要加()
@@ -227,7 +227,7 @@ setOptionsobj.loadChromeSetting(chromedata)
 driver = setOptionsobj.reDriver()
 sendMessageobj = sendMessage()
 #斗鱼房间url
-url = 'https://www.douyu.com/4246519'
+url = 'https://www.douyu.com/123456798'
 #浏览器窗口最大
 sendMessageobj.chromesetting()
 sendMessageobj.getRequest(url,driver)
@@ -238,7 +238,7 @@ imgVerifyobj = imgVerify()
 #通过cookie判断是否已登录,未登录则进行登录验证
 if 'acf_username' not in str(driver.get_cookies()):
     # 输入用户名密码
-    imgVerifyobj.infoInput(driver, '18776276460', '13425720357')
+    imgVerifyobj.infoInput(driver, '用户名', '密码')
     # 验证登录
     imgVerifyobj.verify(driver)
 # #获取完整图片
