@@ -9,7 +9,7 @@ from chaojiying import Chaojiying_Client
 from PIL import Image
 import time
 
-#加载配置项
+#浏览器配置
 class setOptions:
     options = Options()
     driver = ''
@@ -34,13 +34,7 @@ class setOptions:
 
 #发送弹幕
 class sendMessage:
-    #执行请求
-    #设置浏览器窗口大小
-    def chromesetting(self,size = 'max',x='',y=''):
-        if size == 'max':
-            driver.maximize_window()
-    def getRequest(self,url,driver):
-        driver.get(url)
+    #发送弹幕
     def sendit(self,string,driver,repeat):
         for i in range(repeat):
             str1 = string + str(i)
@@ -52,7 +46,7 @@ class sendMessage:
 
 #验证登录
 class imgVerify:
-    #登录
+    #输入用户名密码点击登录
     def infoInput(self,driver,username,password):
         #点击 头像获取登录表单
         driver.find_element_by_xpath('//*[@id="js-header"]/div/div/div[3]/div[7]/div/div/a/span').click()
@@ -78,14 +72,14 @@ class imgVerify:
         driver.find_element_by_xpath('//*[@id="loginbox"]/div[3]/div[2]/div[2]/form/div[6]/input').click()
         print('用户名密码输入完成')
         time.sleep(2)
-    #获取图片
+    #获取验证图片
     def getImg(self,driver):
         #判断验证类型，斗鱼使用超验的两种验证，一种滑动另一种是顺序点击
         #点击
         if self.isElementPresent(driver,'/html/body/div[4]/div[2]/div[6]/div/div/div[1]'):
             print(self.isElementPresent(driver,'/html/body/div[4]/div[2]/div[6]/div/div/div[1]'))
             self.img = r"D:/spider/captche/orderClick.png"
-            # 元素定位截图保存
+            # 需要截取的元素定位
             element  = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div[6]/div/div')
             element.screenshot(self.img)
         #滑动：通过滑块元素判断为滑动验证类型
@@ -93,10 +87,10 @@ class imgVerify:
             print(self.isElementPresent(driver,'body > div.geetest_panel.geetest_wind > div.geetest_panel_box > div.geetest_panel_next > div > div.geetest_wrap > div.geetest_slider.geetest_ready > div.geetest_slider_button','css'))
             self.img = r"D:/spider/captche/ slidingBlock.png"
             driver.find_element_by_xpath('/html/body/div[4]/div[2]/div[6]/div/div[1]/div[1]/div/a/div[1]').get_screenshot_as_file(img)
-    #返回坐标点
+    #发送图片到超鹰接口返回坐标点
     def getCoordByChaoying(self,driver):
         self.getImg(driver)
-        self.chaojiying = Chaojiying_Client('超鹰用户名', '密码','id')  # 用户中心>>软件ID 生成一个替换 96001
+        self.chaojiying = Chaojiying_Client('260631308', 'mengwei080305','4ba372176f5fbed6c385208ae49cd901')  # 用户中心>>软件ID 生成一个替换 96001
         im = open(self.img, 'rb').read()  # 本地图片文件路径 来替换 a.jpg 有时WIN系统须要//
         if self.img == "D:/spider/captche/orderClick.png":
             dict = self.chaojiying.PostPic(im, 9004)  # 1902 验证码类型  官方网站>>价格体系 3.4+版 print 后要加()
@@ -108,7 +102,8 @@ class imgVerify:
             print(dict)
             if dict['err_str'] =='OK':
                 return dict
-    #selenium 模拟拖动验证或顺序点击验证
+
+    #根据返回的坐标点进行模拟拖动验证或顺序点击验证实现登录
     def verify(self,driver):
         #判断验证码类型
         dict = self.getCoordByChaoying(driver)
@@ -154,7 +149,8 @@ class imgVerify:
         else:
             # 没有发生异常，表示在页面中找到了该元素，返回True
             return True
-    #验证超鹰接口返回的坐标是否正确，同时给接口报错返回积分
+
+    #验证超鹰接口返回的坐标是否正确，正确返回true，错误给接口报错并返回积分
     def isCoorRight(self,driver,im_id):
         #登录成功后刷新网页，显性等待获取具有登录后产生特殊标识的元素
         xpath = '//*[@id="js-player-asideMain"]/div/div[2]/div/div[2]/div[2]/div[1]/div[1]'
@@ -229,16 +225,14 @@ setOptionsobj = setOptions(chrome_location = r'D:\Google\Chrome\Application\chro
 chromedata =  r'C:\Users\Administrator\AppData\Local\Google\Chrome\User Data'
 setOptionsobj.loadChromeSetting(chromedata)
 driver = setOptionsobj.reDriver()
-
 sendMessageobj = sendMessage()
-#设置发送弹幕的斗鱼房间号
-url = 'https://www.douyu.com/9999'
 
 #设置浏览器窗口大小，打开url
-sendMessageobj.chromesetting()
-sendMessageobj.getRequest(url,driver)
+url = 'https://www.douyu.com/4246519'
+driver.maximize_window()
+driver.get(url)
 
-#显性等待获取弹幕输入框
+#获取弹幕输入框
 xpath = '//*[@id="js-player-asideMain"]/div/div[2]/div/div[2]/div[2]/textarea'
 WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH,xpath)))
 
