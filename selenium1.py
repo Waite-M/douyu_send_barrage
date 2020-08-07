@@ -54,22 +54,22 @@ class imgVerify:
         iframe = driver.find_element_by_xpath('//*[@id="login-passport-frame"]')
         driver.switch_to.frame(iframe)
         #点击密码方式登录
-        driver.find_element_by_xpath('//*[@id="loginbox"]/div[2]/div[1]/div[1]').click()
+        driver.find_element_by_xpath('//*[@id="loginbox"]/div[2]/div[1]/div[2]').click()
         time.sleep(2)
         #先删除已存在的用户名和密码,在输入用户名密码然后点击登录
-        nameInput = driver.find_element_by_xpath('//*[@id="loginbox"]/div[3]/div[2]/div[2]/form/div[1]/div/input')
+        nameInput = driver.find_element_by_xpath('//*[@id="loginbox"]/div[3]/div[2]/div/form/div[1]/div/input')
         nameInput.click()
         nameInput.send_keys(Keys.CONTROL,'a')
         nameInput.send_keys(Keys.BACK_SPACE)
         nameInput.send_keys(username)
 
-        passInput = driver.find_element_by_xpath('//*[@id="loginbox"]/div[3]/div[2]/div[2]/form/div[3]/input[1]')
+        passInput = driver.find_element_by_xpath('//*[@id="loginbox"]/div[3]/div[2]/div/form/div[3]/input[1]')
         passInput.click()
         passInput.send_keys(Keys.CONTROL,'a')
         passInput.send_keys(Keys.BACK_SPACE)
         passInput.send_keys(password)
         #点击登录弹出验证
-        driver.find_element_by_xpath('//*[@id="loginbox"]/div[3]/div[2]/div[2]/form/div[6]/input').click()
+        driver.find_element_by_xpath('//*[@id="loginbox"]/div[3]/div[2]/div/form/div[6]/input').click()
         print('用户名密码输入完成')
         time.sleep(2)
     #获取验证图片
